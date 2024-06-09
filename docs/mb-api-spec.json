@@ -1,0 +1,114 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Message Board API",
+        "version": "1.0.0"
+    },
+    "components": {
+        "schemas": {
+            "message": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of User who created the message.",
+                        "minLength": 3,
+                        "maxLength": 15,
+                        "pattern": "^[A-Za-z0-9_]+$"
+                    },
+                    "msgText": {
+                        "type": "string",
+                        "description": "A message's text.",
+                        "minLength": 2,
+                        "maxLength": 30
+                    }
+                },
+                "required": ["name", "msgText"]
+            },
+            "messageWithId": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/message"
+                    },
+                    {
+                        "type": "object",
+                        "description": "A message with id",
+                        "required": ["id"],
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "description": "message's id.",
+                                "example": 1
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "http://10.21.75.182:3004/v1",
+            "description": "Message Board API Dev Server"
+        }
+    ],
+    "security": [],
+    "paths": {
+        "/messages": {
+            "description": "All the messages",
+            "get": {
+                "summary": "List all the messages",
+                "operationId": "getAllMessages",
+                "description": "List all the messages in the order they were posted (newest at top).",
+                "responses": {
+                    "200": {
+                        "description": "All the messages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/messageWithId"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Add a new message",
+                "operationId": "addMessage",
+                "description": "Add a new message to the message board.",
+                "requestBody": {
+                    "description": "Message's data",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/message"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Message created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/messageWithId"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. The message in the body of the Request is either missing or malformed."
+                    }
+                }
+            }
+        }
+    }
+}

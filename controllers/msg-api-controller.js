@@ -33,7 +33,7 @@ const addNewMessage = async (req, res) => {
         // Respond with '201 Created' Status Code and the message, as JSON, in the body of the response
         res.status(201).json(message);
     } catch (err) {
-        res.status(400).send('Bad Request. The message in the body of the request is either missing or malformed.');
+        res.status(400).send('Bad Request. The message in the body of the request is either missing or malformed. ' + err);
     }
 };
 

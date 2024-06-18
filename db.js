@@ -1,3 +1,4 @@
+import './models/message-schema.js';
 import mongoose from 'mongoose';
 // connect to locally running MongoDB instance
 let dbURI = 'mongodb://localhost:27017/msgs_db';

@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "Message Board API",
-        "version": "1.0.0"
+        "version": "1.0.1" 
     },
     "components": {
         "schemas": {
@@ -43,6 +43,58 @@
                         }
                     }
                 ]
+            },
+            "user": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "User's email address.",
+                        "example": "user@example.com"
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "A registered user's username.",
+                        "minLength": 3,
+                        "maxLength": 15,
+                        "pattern": "^[A-Za-z0-9_-]+$",
+                        "example": "Fred"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "description": "User's password.",
+                        "minLength": 8,
+                        "maxLength": 64,
+                        "example": "password123"
+                    }
+                },
+                "required": ["email", "username", "password"]
+            },
+            "userWithId": { 
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/user"
+                    },
+                    {
+                        "type": "object",
+                        "description": "A user with id",
+                        "required": ["id"],
+                        "properties": {
+                            "id": {
+                                "type": "number",
+                                "description": "User's id.",
+                                "example": 1
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "responses": { 
+            "429TooManyRequests": {
+                "description": "Too many requests."
             }
         }
     },
@@ -76,6 +128,9 @@
                     },
                     "400": {
                         "description": "Bad Request"
+                    },
+                    "429": {  
+                        "$ref": "#/components/responses/429TooManyRequests"
                     }
                 }
             },
@@ -106,6 +161,48 @@
                     },
                     "400": {
                         "description": "Bad Request. The message in the body of the Request is either missing or malformed."
+                    },
+                    "429": {  
+                        "$ref": "#/components/responses/429TooManyRequests"
+                    }
+                }
+            }
+        },
+        "/users": { 
+            "description": "All the users",
+            "post": {
+                "summary": "Register a new user",
+                "operationId": "registerUser",
+                "description": "Add a new user to the system.",
+                "requestBody": {
+                    "description": "User's data",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User successfully registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userWithId"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. The User in the body of the Request is either missing or malformed."
+                    },
+                    "403": {
+                        "description": "Username or email already exists."
+                    },
+                    "429": {  
+                        "$ref": "#/components/responses/429TooManyRequests"
                     }
                 }
             }

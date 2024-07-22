@@ -2,7 +2,7 @@
     "openapi": "3.1.0",
     "info": {
         "title": "Message Board API",
-        "version": "1.0.1" 
+        "version": "1.0.1"
     },
     "components": {
         "schemas": {
@@ -37,7 +37,7 @@
                         "properties": {
                             "id": {
                                 "type": "number",
-                                "description": "message's id.",
+                                "description": "Message's id.",
                                 "example": 1
                             }
                         }
@@ -72,7 +72,7 @@
                 },
                 "required": ["email", "username", "password"]
             },
-            "userWithId": { 
+            "userWithId": {
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/user"
@@ -92,7 +92,7 @@
                 ]
             }
         },
-        "responses": { 
+        "responses": {
             "429TooManyRequests": {
                 "description": "Too many requests."
             }
@@ -129,7 +129,7 @@
                     "400": {
                         "description": "Bad Request"
                     },
-                    "429": {  
+                    "429": {
                         "$ref": "#/components/responses/429TooManyRequests"
                     }
                 }
@@ -162,13 +162,13 @@
                     "400": {
                         "description": "Bad Request. The message in the body of the Request is either missing or malformed."
                     },
-                    "429": {  
+                    "429": {
                         "$ref": "#/components/responses/429TooManyRequests"
                     }
                 }
             }
         },
-        "/users": { 
+        "/users": {
             "description": "All the users",
             "post": {
                 "summary": "Register a new user",
@@ -201,7 +201,7 @@
                     "403": {
                         "description": "Username or email already exists."
                     },
-                    "429": {  
+                    "429": {
                         "$ref": "#/components/responses/429TooManyRequests"
                     }
                 }

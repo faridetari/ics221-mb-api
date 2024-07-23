@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import argon2 from 'argon2';
 
 // Create a new schema
 const userSchema = new mongoose.Schema({
@@ -36,6 +37,18 @@ userSchema.set('toJSON', {
         delete ret._id;
         delete ret.__v;
         return ret;
+    }
+});
+// Pre-Hook to Salt and Hash a password using argon2id
+userSchema.pre('save', async function () {
+    // hash and salt password
+    try {
+        const hash = await argon2.hash(this.password, {
+            type: argon2.argon2id
+        });
+        this.password = hash;
+    } catch (err) {
+        console.log('Error in hashing password' + err);
     }
 });
 

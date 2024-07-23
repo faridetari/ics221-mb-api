@@ -39,6 +39,7 @@ userSchema.set('toJSON', {
         return ret;
     }
 });
+
 // Pre-Hook to Salt and Hash a password using argon2id
 userSchema.pre('save', async function () {
     // hash and salt password
@@ -51,6 +52,16 @@ userSchema.pre('save', async function () {
         console.log('Error in hashing password' + err);
     }
 });
+
+// Instance method to compare hashes to verify a password
+userSchema.methods.verifyPassword = async function(plainTextPassword) {
+    const dbHashedPassword = this.password;
+    try {
+        return await argon2.verify(dbHashedPassword, plainTextPassword);
+    } catch (err) {
+        console.log('Error verifying password' + err);
+    }
+};
 
 // Export the user model
 export default mongoose.model('user', userSchema);

@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import { BasicStrategy } from 'passport-http';
 
+
 // Initialize a reference to your User Model
 const userModel = mongoose.model('user');
 
@@ -59,5 +60,10 @@ passport.use(new BasicStrategy(
     }
 ));
 
-// Export the registerNewUser function
-export { registerNewUser };
+// Login Handler
+const logInUser = (req, res) => {
+    res.status(200).send('Successful API Login Request');
+};
+
+// Export the registerNewUser and logInUser functions
+export { registerNewUser, logInUser };

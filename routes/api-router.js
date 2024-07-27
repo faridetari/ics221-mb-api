@@ -1,7 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import { getAllMessages, addNewMessage } from '../controllers/msg-api-controller.js';
-import { registerNewUser } from '../controllers/user-api-controller.js'; // Import the handler for the /users POST request
+import { registerNewUser, logInUser } from '../controllers/user-api-controller.js'; // Import the handler for the /users POST request and the logInUser function
 
 const router = express.Router();
 
@@ -11,5 +11,8 @@ router.route('/messages')
 
 router.route('/users')
     .post(registerNewUser); // Add the /users route for POST requests
+
+router.route('/login')
+    .post(logInUser); // Add the /login route for POST requests
 
 export default router;

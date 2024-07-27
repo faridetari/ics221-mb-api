@@ -14,15 +14,13 @@
                         "description": "Name of User who created the message.",
                         "minLength": 3,
                         "maxLength": 15,
-                        "pattern": "^[A-Za-z0-9_]+$",
-                        "example": "User123"
+                        "pattern": "^[A-Za-z0-9_]+$"
                     },
                     "msgText": {
                         "type": "string",
                         "description": "A message's text.",
                         "minLength": 2,
-                        "maxLength": 30,
-                        "example": "Hello, this is a message."
+                        "maxLength": 30
                     }
                 },
                 "required": ["name", "msgText"]
@@ -52,7 +50,7 @@
                     "email": {
                         "type": "string",
                         "format": "email",
-                        "description": "A registered user's email address.",
+                        "description": "User's email address.",
                         "example": "user@example.com"
                     },
                     "username": {
@@ -60,16 +58,16 @@
                         "description": "A registered user's username.",
                         "minLength": 3,
                         "maxLength": 15,
-                        "pattern": "^[A-Za-z0-9_]+$",
+                        "pattern": "^[A-Za-z0-9_-]+$",
                         "example": "Fred"
                     },
                     "password": {
                         "type": "string",
-                        "description": "A registered user's password.",
+                        "format": "password",
+                        "description": "User's password.",
                         "minLength": 8,
                         "maxLength": 64,
-                        "format": "password",
-                        "example": "strongPassword123"
+                        "example": "password123"
                     }
                 },
                 "required": ["email", "username", "password"]
@@ -173,8 +171,8 @@
         "/users": {
             "description": "All the users",
             "post": {
-                "summary": "Add a new user",
-                "operationId": "addUser",
+                "summary": "Register a new user",
+                "operationId": "registerUser",
                 "description": "Add a new user to the system.",
                 "requestBody": {
                     "description": "User's data",
@@ -188,7 +186,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "User created",
+                        "description": "User successfully registered",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -198,7 +196,71 @@
                         }
                     },
                     "400": {
-                        "description": "Bad Request. The user data in the body of the Request is either missing or malformed."
+                        "description": "Bad Request. The User in the body of the Request is either missing or malformed."
+                    },
+                    "403": {
+                        "description": "Forbidden."
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/429TooManyRequests"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "description": "User login",
+            "post": {
+                "summary": "Log in a user",
+                "operationId": "loginUser",
+                "description": "Log in a user to the system.",
+                "requestBody": {
+                    "description": "Login data",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "description": "The user's username or email.",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "maxLength": 64,
+                                        "description": "The user's password.",
+                                        "example": "password123"
+                                    }
+                                },
+                                "required": ["username", "password"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged in.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "description": "JWT Token",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. The Login data in the body of the Request is either missing or malformed."
+                    },
+                    "401": {
+                        "description": "Username or password don't match."
                     },
                     "429": {
                         "$ref": "#/components/responses/429TooManyRequests"

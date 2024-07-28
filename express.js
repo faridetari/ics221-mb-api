@@ -1,3 +1,5 @@
+import 'dotenv/config'; // Load environment variables from .env
+
 // mongodb connection via mongoose
 import './db.js';
 import express from 'express';
@@ -8,7 +10,12 @@ import cors from 'cors';
 import apiRouter from './routes/api-router.js';
 import rateLimit from 'express-rate-limit';
 
+
 // Set up rate limiting
+
+import passport from 'passport';
+
+
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
     max: 10, // Limit each IP to 10 requests per `window` (here, per minute)
@@ -24,8 +31,13 @@ app.use(compression());
 app.use(morgan('dev'));
 app.use(cors());
 
+
 // Activate rate limiter
 app.use(limiter);
+
+
+app.use(limiter); // Append rate limiter here
+app.use(passport.initialize());
 
 // Routing
 app.get('/', (req, res) => {

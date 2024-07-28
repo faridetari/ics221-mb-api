@@ -161,48 +161,6 @@
                     },
                     "400": {
                         "description": "Bad Request. The message in the body of the Request is either missing or malformed."
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/429TooManyRequests"
-                    }
-                }
-            }
-        },
-        "/users": {
-            "description": "All the users",
-            "post": {
-                "summary": "Register a new user",
-                "operationId": "registerUser",
-                "description": "Add a new user to the system.",
-                "requestBody": {
-                    "description": "User's data",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/user"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User successfully registered",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/userWithId"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request. The User in the body of the Request is either missing or malformed."
-                    },
-                    "403": {
-                        "description": "Username or email already exists."
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/429TooManyRequests"
                     }
                 }
             }

@@ -1,3 +1,5 @@
+import 'dotenv/config'; // Load environment variables from .env
+
 // mongodb connection via mongoose
 import './db.js';
 import express from 'express';
@@ -5,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import morgan from 'morgan';
 import cors from 'cors';
-import apiRouter from './routes/api-router.js'
+import apiRouter from './routes/api-router.js';
 import rateLimit from 'express-rate-limit';
 import passport from 'passport';
 

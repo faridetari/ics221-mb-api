@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
-
+import jwt from 'jsonwebtoken';
 
 // Initialize a reference to your User Model
 const userModel = mongoose.model('user');
@@ -62,7 +62,25 @@ passport.use(new LocalStrategy(
 
 // Login Handler
 const logInUser = (req, res) => {
-    res.status(200).send('Successful API Login Request');
+    // Comment out the test code
+    // res.status(200).send('Successful API Login Request');
+
+    // Generate a JWT token
+    jwt.sign(
+        {
+            sub: req.user._id,
+            username: req.user.username
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '20m' },
+        (error, token) => {
+            if (error) {
+                res.status(400).send('Bad Request. Couldn\'t generate token.');
+            } else {
+                res.status(200).json({ token });
+            }
+        }
+    );
 };
 
 // Export the registerNewUser and logInUser functions

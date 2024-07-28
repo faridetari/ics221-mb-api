@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import passport from 'passport';
-import { BasicStrategy } from 'passport-http';
+import LocalStrategy from 'passport-local';
 
 
 // Initialize a reference to your User Model
@@ -34,22 +34,22 @@ const registerNewUser = async (req, res) => {
     }
 };
 
-// Configure Basic Authentication Strategy
-passport.use(new BasicStrategy(
-    async (userIdent, password, done) => {
+// Configure Local Authentication Strategy
+passport.use(new LocalStrategy(
+    async (username, password, done) => {
         try {
             const user = await userModel.findOne({
                 '$or': [
-                    { email: userIdent },
-                    { username: userIdent }
+                    { email: username },
+                    { username: username }
                 ]
             }).exec();
             // user wasn't found
-            if (!user) return done(null, false);
+            if (!user) return done(null, false, { message: 'Incorrect username or password.' });
             // user was found, see if it's a valid password
             if (!await user.verifyPassword(password)) {
                 // password not valid
-                return done(null, false);
+                return done(null, false, { message: 'Incorrect username or password.' });
             }
             // valid password, return user
             return done(null, user);

@@ -7,12 +7,12 @@ const router = express.Router();
 
 router.route('/messages')
     .get(getAllMessages)
-    .post(passport.authenticate('basic', { session: false }), addNewMessage); // Modify to use Basic Authentication
+    .post(passport.authenticate('local', { session: false }), addNewMessage); // Modify to use Local Authentication
 
 router.route('/users')
     .post(registerNewUser); // Add the /users route for POST requests
 
 router.route('/login')
-    .post(logInUser); // Add the /login route for POST requests
+    .post(passport.authenticate('local', { session: false }), logInUser); // Add the /login route for POST requests using Local Authentication
 
 export default router;

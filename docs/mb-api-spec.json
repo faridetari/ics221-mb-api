@@ -161,6 +161,109 @@
                     },
                     "400": {
                         "description": "Bad Request. The message in the body of the Request is either missing or malformed."
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/429TooManyRequests"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "description": "All the users",
+            "post": {
+                "summary": "Register a new user",
+                "operationId": "registerUser",
+                "description": "Add a new user to the system.",
+                "requestBody": {
+                    "description": "User's data",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/user"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User successfully registered",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/userWithId"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. The User in the body of the Request is either missing or malformed."
+                    },
+                    "403": {
+                        "description": "Forbidden."
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/429TooManyRequests"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "description": "User login",
+            "post": {
+                "summary": "Log in a user",
+                "operationId": "loginUser",
+                "description": "Log in a user to the system.",
+                "requestBody": {
+                    "description": "Login data",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string",
+                                        "maxLength": 50,
+                                        "description": "The user's username or email.",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "maxLength": 64,
+                                        "description": "The user's password.",
+                                        "example": "password123"
+                                    }
+                                },
+                                "required": ["username", "password"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged in.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "description": "JWT Token",
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request. The Login data in the body of the Request is either missing or malformed."
+                    },
+                    "401": {
+                        "description": "Username or password don't match."
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/429TooManyRequests"
                     }
                 }
             }

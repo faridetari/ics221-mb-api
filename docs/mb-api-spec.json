@@ -2,9 +2,16 @@
     "openapi": "3.1.0",
     "info": {
         "title": "Message Board API",
-        "version": "1.0.1"
+        "version": "1.0.2"
     },
     "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
         "schemas": {
             "message": {
                 "type": "object",
@@ -95,6 +102,9 @@
         "responses": {
             "429TooManyRequests": {
                 "description": "Too many requests."
+            },
+            "401Unauthorized": {
+                "description": "Unauthorized. The request requires user authentication."
             }
         }
     },
@@ -104,7 +114,11 @@
             "description": "Message Board API Dev Server"
         }
     ],
-    "security": [],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
     "paths": {
         "/messages": {
             "description": "All the messages",
@@ -138,6 +152,11 @@
                 "summary": "Add a new message",
                 "operationId": "addMessage",
                 "description": "Add a new message to the message board.",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
                 "requestBody": {
                     "description": "Message's data",
                     "content": {
@@ -161,6 +180,9 @@
                     },
                     "400": {
                         "description": "Bad Request. The message in the body of the Request is either missing or malformed."
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401Unauthorized"
                     }
                 }
             }

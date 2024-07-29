@@ -3,14 +3,11 @@ import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import jwt from 'jsonwebtoken';
 
-<<<<<<< HEAD
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 let jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = process.env.JWT_SECRET;
 
-=======
->>>>>>> add-logging-in
 // Initialize a reference to your User Model
 const userModel = mongoose.model('user');
 
@@ -68,7 +65,6 @@ passport.use(new LocalStrategy(
     }
 ));
 
-<<<<<<< HEAD
 passport.use(new JwtStrategy(
     jwtOptions, async (jwt_payload, done) => {
         try {
@@ -87,8 +83,6 @@ passport.use(new JwtStrategy(
     }
 ));
 
-=======
->>>>>>> add-logging-in
 // Login Handler
 const logInUser = (req, res) => {
     // Comment out the test code
